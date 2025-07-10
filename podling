@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+QUADLET=false
+QUAD_NAME=""
+IMAGE="nginx:latest"
+PORT="8080:80"
+
+# Shift to ignore $1 (username)
+shift
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --quadlet)
+      QUADLET=true
+      # Check if the next argument is the name (not another flag)
+      if [[ "${2:-}" && ! "${2}" =~ ^-- ]]; then
+        QUAD_NAME="$2"
+        shift
+      fi
+      ;;
+    *)
+      echo "Unknown option: $1"
+      exit 1
+      ;;
+  esac
+  shift
+done
+
+useradd -r -s $LOGIN_SHELL -m -d /var/lib/"$USER_NAME" $USER_NAME
+
+UID=$(id -u "$USER_NAME")
+mkdir -p /var/run/"$UID"
+
+chown -R $USER_NAME:$USER_NAME /var/run/"$UID"
+
+loginctl enable-linger $USER_NAME
+
+usermod --add-subuids 100000-101000 "$USER_NAME"
+usermod --add-subgids 100000-101000 "$USER_NAME"
+
+if $QUADLET; then
+    if [[ -d "$UNIT_DIR" ]]; then
+    cat > "$UNIT_DIR/$QUAD_NAME.container" <<EOF
+[Container]
+Image=
+
+[Service]
+User=$USER_NAME
+Group=$USER_NAME
+EOF
+
+echo "Generated Quadlet container unit: $UNIT_DIR/$QUAD_NAME.container"
+echo "Open it in editor? [y/N]"
+read -r response
+
+  case $response in
+    y|Y)
+      systemctl edit --full "$QUAD_NAME.container"
+      ;;
+    *)
+      echo "Skipping edit."
+      ;;
+  esac
+fi
