@@ -27,7 +27,7 @@ while [[ $# -gt 0 ]]; do
   shift
 done
 
-useradd -r -s $LOGIN_SHELL -m -d /var/lib/"$USER_NAME" $USER_NAME
+useradd -r -s /usr/bin/nologin -m -d /var/lib/"$USER_NAME" $USER_NAME
 
 UID=$(id -u "$USER_NAME")
 mkdir -p /var/run/"$UID"
