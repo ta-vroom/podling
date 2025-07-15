@@ -27,8 +27,11 @@ while [[ $# -gt 0 ]]; do
   shift
 done
 
-useradd -r -s /usr/bin/nologin -m -d /var/lib/"$USER_NAME" $USER_NAME
-
+if ! id "$USER_NAME" &>/dev/null; then
+  useradd -r -s /usr/bin/nologin -m -d /var/lib/"$USER_NAME" "$USER_NAME"
+else
+  echo "User $USER_NAME already exists, continuing..."
+fi
 USER_ID=$(id -u "$USER_NAME")
 mkdir -p /var/run/"$USER_ID"
 
