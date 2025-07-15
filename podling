@@ -6,6 +6,9 @@ QUAD_NAME=""
 IMAGE="nginx:latest"
 PORT="8080:80"
 
+QUAD_DIR=/etc/containers/systemd
+
+
 USER_NAME="$1"
 shift
 
@@ -43,8 +46,8 @@ usermod --add-subuids 100000-101000 "$USER_NAME"
 usermod --add-subgids 100000-101000 "$USER_NAME"
 
 if $QUADLET; then
-    if [[ -d "$UNIT_DIR" ]]; then
-    cat > "$UNIT_DIR/$QUAD_NAME.container" <<EOF
+    if [[ -d "$QUAD_DIR" ]]; then
+    cat > "$QUAD_DIR/$QUAD_NAME.container" <<EOF
 [Container]
 Image=
 
