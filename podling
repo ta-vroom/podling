@@ -62,7 +62,7 @@ read -r response
 
   case $response in
     y|Y)
-      systemctl edit --full "$QUAD_NAME.container"
+      $EDITOR "$QUAD_NAME.container"
       ;;
     *)
       echo "Skipping edit."
