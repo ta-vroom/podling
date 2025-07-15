@@ -29,10 +29,10 @@ done
 
 useradd -r -s /usr/bin/nologin -m -d /var/lib/"$USER_NAME" $USER_NAME
 
-UID=$(id -u "$USER_NAME")
-mkdir -p /var/run/"$UID"
+USER_ID=$(id -u "$USER_NAME")
+mkdir -p /var/run/"$USER_ID"
 
-chown -R $USER_NAME:$USER_NAME /var/run/"$UID"
+chown -R $USER_NAME:$USER_NAME /var/run/"$USER_ID"
 
 loginctl enable-linger $USER_NAME
 
