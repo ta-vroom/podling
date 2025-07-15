@@ -56,7 +56,7 @@ User=$USER_NAME
 Group=$USER_NAME
 EOF
 
-echo "Generated Quadlet container unit: $UNIT_DIR/$QUAD_NAME.container"
+echo "Generated Quadlet container unit: $QUAD_DIR/$QUAD_NAME.container"
 echo "Open it in editor? [y/N]"
 read -r response
 
