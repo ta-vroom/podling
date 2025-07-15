@@ -6,7 +6,7 @@ QUAD_NAME=""
 IMAGE="nginx:latest"
 PORT="8080:80"
 
-# Shift to ignore $1 (username)
+USER_NAME="$1"
 shift
 
 while [[ $# -gt 0 ]]; do
